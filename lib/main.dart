@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:mass_project/home.dart';
 void main() => runApp(MyApp());
 
 class FormData{
@@ -81,27 +81,39 @@ class _LoginPageState extends State<LoginPage> {
               TextButton(
                 child: Text('Sign in'),
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {
+                  if (_formKey.currentState.validate() == false) {
                     // If the form is valid, display a snackbar. In the real world,
                     // you'd often call a server or save the information in a database.
+                    print("here in this shit ");
+                    print(_formKey.currentState.validate());
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('Processing Data')));
+                        .showSnackBar(
+                        SnackBar(content: Text('Processing Data')));
                   }
-                  print("here before the request");
-                  final response = await http.post(
-                    Uri.parse('http://192.168.100.250:8069/web/session/authenticate'),
-                    headers: <String, String>{
-                      'Content-Type': 'application/json; charset=UTF-8',
-                    },
-                    body: jsonEncode(<String, String>{
-                      "db":"test1","login":formData.email,"password":formData.password
-                    }),
-                  );
-                  print("here after the request");
-                  if (response.statusCode == 200) {
-                    print(response);
-                  } else {
-                    throw Exception('Failed to load album');
+                  else {
+                    print("here before the request");
+                    final response = await http.post(
+                      Uri.parse(
+                          'http://192.168.100.250:8069/web/session/authenticate'),
+                      headers: <String, String>{
+                        'Content-Type': 'application/json; charset=UTF-8',
+                      },
+                      body: jsonEncode(<String, String>{
+                        "db": "test1",
+                        "login": formData.email,
+                        "password": formData.password
+                      }),
+                    );
+                    print("here after the request");
+                    if (response.statusCode == 200) {
+                      print(response);
+                    } else {
+                      throw Exception('Failed to load album');
+                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
                   }
                 },
               ),
