@@ -28,7 +28,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
   FormData formData = FormData();
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,54 +36,78 @@ class _LoginPageState extends State<LoginPage> {
         title: Text("Hello World"),
       ),
       body: Center(
-        child: Column(
-          children: [
-            TextFormField(
-              autofocus:  true,
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(
-                filled: true,
-                hintText: 'Your email address',
-                labelText: 'Email',
+        child:Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                autofocus:  true,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  filled: true,
+                  hintText: 'Your email address',
+                  labelText: 'Email',
+                ),
+                validator: (value){
+                  if (value == null || value.isEmpty){
+                    print("value is $value");
+                    return 'please fill the user name field';
+                  }else{
+                    return null;
+                  }
+                },
+                onChanged: (value) {
+                  formData.email = value;
+                },
               ),
-              onChanged: (value) {
-                formData.email = value;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                filled: true,
-                labelText: 'Password',
+              TextFormField(
+                decoration: InputDecoration(
+                  filled: true,
+                  labelText: 'Password',
+                ),
+                obscureText: true,
+                validator: (value){
+                  if (value == null || value.isEmpty){
+                    print("value is $value");
+                    return 'please fill the password field';
+                  }else{
+                    return null;
+                  }
+                },
+                onChanged: (value) {
+                  formData.password = value;
+                },
               ),
-              obscureText: true,
-              onChanged: (value) {
-                formData.password = value;
-              },
-            ),
-            TextButton(
-              child: Text('Sign in'),
-              onPressed: () async {
-                print("here before the request");
-                final response = await http.post(
+              TextButton(
+                child: Text('Sign in'),
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    // If the form is valid, display a snackbar. In the real world,
+                    // you'd often call a server or save the information in a database.
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('Processing Data')));
+                  }
+                  print("here before the request");
+                  final response = await http.post(
                     Uri.parse('http://192.168.100.250:8069/web/session/authenticate'),
-                  headers: <String, String>{
-                    'Content-Type': 'application/json; charset=UTF-8',
-                  },
-                  body: jsonEncode(<String, String>{
-                    "db":"test1","login":formData.email,"password":formData.password
-                  }),
-                );
-                print("here after the request");
-                if (response.statusCode == 200) {
-                  print(response);
-                  print("..............");
-                } else {
-                  throw Exception('Failed to load album');
-                }
-              },
-            ),
-          ],
-        ),
+                    headers: <String, String>{
+                      'Content-Type': 'application/json; charset=UTF-8',
+                    },
+                    body: jsonEncode(<String, String>{
+                      "db":"test1","login":formData.email,"password":formData.password
+                    }),
+                  );
+                  print("here after the request");
+                  if (response.statusCode == 200) {
+                    print(response);
+                  } else {
+                    throw Exception('Failed to load album');
+                  }
+                },
+              ),
+            ],
+          ),
+        )
       ),
     );
   }
