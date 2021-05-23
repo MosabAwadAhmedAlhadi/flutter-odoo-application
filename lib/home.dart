@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mass_project/main.dart';
+import 'package:mass_project/customers.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,7 @@ class _HomePageContentState extends State<HomePageContent> {
                 child: ElevatedButton(
                   child: Text("Customers"),
                   onPressed:(){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Customers()));
                   }
                   ,
                 ),
