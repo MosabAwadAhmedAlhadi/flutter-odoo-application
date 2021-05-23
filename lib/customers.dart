@@ -10,11 +10,24 @@ class Customers extends StatelessWidget {
             centerTitle:true,
             title: Text("Customers"),
           ),
-          body:Center(
-            child: Text("Customers"),
-          )
+          body:CustomersList()
         ),
       ),
     );
   }
 }
+class CustomersList extends StatefulWidget {
+  @override
+  _CustomersListState createState() => _CustomersListState();
+}
+
+class _CustomersListState extends State<CustomersList> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ListView(
+      ),
+    );
+  }
+}
+
