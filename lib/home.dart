@@ -3,11 +3,27 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Dashboard"),
-      ),
-      body: HomePageContent()
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: AppBar(
+              bottom: TabBar(
+                tabs: [
+                  Tab(icon: Icon(Icons.directions_car)),
+                  Tab(icon: Icon(Icons.directions_transit)),
+                ],
+              ),
+              title: Text("Dashboard"),
+            ),
+            body: TabBarView(
+              children: [
+                HomePageContent(),
+                Icon(Icons.directions_transit),
+              ],
+            ),
+          ),
+      )
     );
   }
 }
