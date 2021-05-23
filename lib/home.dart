@@ -5,7 +5,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Second Route"),
+        title: Text("Dashboard"),
       ),
       body: HomePageContent()
     );
@@ -20,6 +20,7 @@ class HomePageContent extends StatefulWidget {
 class _HomePageContentState extends State<HomePageContent> {
   @override
   Widget build(BuildContext context) {
+    // here we will return our home page content later
     return Center(
       child: ElevatedButton(
         onPressed: () {
